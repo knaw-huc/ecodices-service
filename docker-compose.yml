@@ -23,7 +23,7 @@ services:
   pyservice:
     build:
       context: ./
-      dockerfile: Dockerfile.service
+      dockerfile: Dockerfile
     container_name: ecodices_service
     environment:
       - VIRTUAL_HOST=ecoservice.sd.di.huc.knaw.nl
