@@ -19,8 +19,8 @@ ENV LC_ALL de_DE.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-COPY ./python_service/app.py /app
-COPY ./python_service/elastic_index.py /app
+COPY ./src/app.py /app
+COPY ./src/elastic_index.py /app
 
 ENV FLASK_APP=/app/app.py
 ENV FLASK_ENV=production
