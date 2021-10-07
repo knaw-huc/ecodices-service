@@ -1,0 +1,37 @@
+version: '2'
+
+networks:
+  ecodices_network:
+    external:
+      name: nginxproxynetwork
+
+services:
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: ecodices_es
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    volumes:
+      - /data/docker/volumes/ecodices_es/_data:/usr/share/elasticsearch/data
+      - /home/robz/:/home
+    networks:
+      - ecodices_network
+
+  pyservice:
+    build:
+      context: ./
+      dockerfile: Dockerfile.service
+    container_name: ecodices_service
+    environment:
+      - VIRTUAL_HOST=ecoservice.sd.di.huc.knaw.nl
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    volumes:
+      - /home/robz/:/home
+    networks:
+      - ecodices_network
