@@ -1,5 +1,6 @@
 from flask import Flask, request
 import json
+import urllib.parse
 from elastic_index import Index
 
 
@@ -42,6 +43,13 @@ def get_filter_facet():
     ret_struc = index.get_filter_facet(facet + ".keyword", amount, facet_filter)
     return json.dumps(ret_struc)
 
+@app.route("/shelfmark-facet", methods=['GET'])
+def get_shelfmark_facet():
+    amount = request.args.get("amount")
+    collection = request.args.get("collection")
+    ret_struc = index.get_shelfmark_facet(urllib.parse.unquote(collection), amount)
+    return json.dumps(ret_struc)
+
 @app.route("/browse", methods=['POST'])
 def browse():
     struc = request.get_json()
@@ -52,6 +60,18 @@ def browse():
 def manuscript():
     id = request.args.get('id')
     manuscript = index.manuscript(id)
+    return json.dumps(manuscript)
+
+@app.route("/delete_from_index", methods=['POST'])
+def delete_from_index():
+    data = request.get_json()
+    status = index.delete_from_index(data["xml"])
+    return json.dumps(status)
+
+@app.route("/fulldesc", methods=['GET'])
+def fulldesc():
+    id = request.args.get('id')
+    manuscript = index.full_description(id)
     return json.dumps(manuscript)
 
 @app.route("/get_collection", methods=["POST"])
