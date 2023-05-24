@@ -8,31 +8,26 @@ networks:
 services:
 
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-    container_name: ecodices_es
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+    container_name: ecodices_tmp_es
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Dlog4j2.formatMsgNoLookups=true
-    ports:
-      - 9200:9200
     volumes:
-      - /data/docker/volumes/ecodices_es/_data:/usr/share/elasticsearch/data
+      - eco_tmp_es:/usr/share/elasticsearch/data
       - /home/robz/:/home
     networks:
       - ecodices_network
 
   pyservice:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: ecodices_service
+    image: registry.diginfra.net/tsd/ecodices-service:0.9
+    container_name: ecodices_tmp_service
     environment:
-      - VIRTUAL_HOST=ecoservice.sd.di.huc.knaw.nl
+      - VIRTUAL_HOST=tmpecoservice.sd.di.huc.knaw.nl
     expose:
       - 5000
-    ports:
-      - 5000:5000
     volumes:
       - /home/robz/:/home
+      - ecoxml_tmp:/xml
     networks:
       - ecodices_network

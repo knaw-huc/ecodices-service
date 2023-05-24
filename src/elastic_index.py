@@ -9,10 +9,10 @@ import unicodedata
 class Index:
     def __init__(self, config):
         self.config = config
-        #self.client = Elasticsearch(hosts=[{"host": "ecodices_es"}], retry_on_timeout=True)
-        self.client = Elasticsearch(hosts=[{"host": "localhost", "port": 9200}], retry_on_timeout=True)
-        self.cmdi_source = "/Users/robzeeman/Desktop/Werkmap/ecodices/xml_selectie/"
-        #self.cmdi_source = "/xml/"
+        self.client = Elasticsearch(hosts=[{"host": "ecodices_es"}], retry_on_timeout=True)
+        #self.client = Elasticsearch(hosts=[{"host": "localhost", "port": 9200}], retry_on_timeout=True)
+        #self.cmdi_source = "/Users/robzeeman/Desktop/Werkmap/ecodices/xml_selectie/"
+        self.cmdi_source = "/xml/"
         self.languages = {"ara": "Arabic",
                           "eng": "English",
                           "fra": "French",
@@ -200,7 +200,7 @@ class Index:
                     "_id": [id]
                 }
             },
-                "_source": ["summary","binding","language", "support", "origin", "tempDate","collection","title","type","origDate","settlement","material","xml","place","decoration","shelfmark", "licence", "measure"]
+                "_source": ["summary","binding","language", "support", "origin", "tempDate","collection","title","type","origDate","settlement","material","xml","place","decoration","shelfmark", "licence", "measure", "permalink"]
             }
         )
         if response["hits"]["total"]["value"] == 1:
